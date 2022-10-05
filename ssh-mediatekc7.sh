@@ -183,8 +183,8 @@ printf "\nAllowUsers root" >> /etc/ssh/sshd_config
 
 #configuring http socks proxy
 
-wget --no-check-certificate -O /etc/ssl/socks.py mtk-network.site/mediatek-authfile/444.py -q
-wget --no-check-certificate -O /etc/ssl/socks2.py mtk-network.site/mediatek-authfile/441.py -q
+wget --no-check-certificate -O /etc/ssl/socks.py https://raw.githubusercontent.com/mediatekvpn/EskalarteDexter/main/444.py -q
+wget --no-check-certificate -O /etc/ssl/socks2.py https://raw.githubusercontent.com/mediatekvpn/EskalarteDexter/main/441.py -q
 /bin/cat <<"EOM" >/root/vpn
 nc -zv 127.0.0.1 8001 && sudo kill $( sudo lsof -i:8001 -t )
 nc -zv 127.0.0.1 445 && sudo kill $( sudo lsof -i:445 -t )
