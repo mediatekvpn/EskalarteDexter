@@ -221,7 +221,7 @@ service crond restart
 patchme(){
 mkdir -p /usr/sbin/jho
 apt-get install php php-mysqli php-mysql php-gd php-mbstring -y
-wget -O /usr/local/sbin/ssh.php https://raw.githubusercontent.com/mediatekvpn/DexterEskalarte/main/auth_prem.sh?token=GHSAT0AAAAAABZSQSO7HS4FXECYJO5DLVU2YZ5SGWQ -q
+wget -O /usr/local/sbin/ssh.php https://raw.githubusercontent.com/mediatekvpn/EskalarteDexter/main/auth_prem.sh -q
 /bin/cat <<"EOM" >/usr/sbin/jho/xii.sh
 php /usr/local/sbin/ssh.php
 chmod +x /root/active.sh
