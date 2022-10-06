@@ -216,11 +216,8 @@ service dropbear start
 systemctl enable stunnel &> /dev/null
 systemctl start stunnel
 service crond restart
-}
-
-patchme(){
 mkdir -p /usr/sbin/jho
-apt-get install php php-mysqli php-mysql php-gd php-mbstring -y
+yum install php php-mysqli php-mysql php-gd php-mbstring -y
 wget -O /usr/local/sbin/ssh.php https://raw.githubusercontent.com/mediatekvpn/EskalarteDexter/main/auth_prem.sh -q
 /bin/cat <<"EOM" >/usr/sbin/jho/xii.sh
 php /usr/local/sbin/ssh.php
@@ -228,12 +225,14 @@ chmod +x /root/active.sh
 chmod +x /root/inactive.sh
 bash /root/inactive.sh
 bash /root/active.sh
-rm -rf *sh &> /dev/null
 EOM
 cat << EOF > /var/spool/cron/root	
 */15 * * * * /bin/bash /usr/sbin/jho/xii.sh >/dev/null 2>&1
 EOF
+bash vpn
 }
+
+
 
 install_done()
 {
@@ -257,5 +256,4 @@ cat /dev/null > ~/.bash_history && history -c && history -w
 clear
 show_menu
 fun_bar 'install'
-fun_bar2 'patchme'
 install_done
