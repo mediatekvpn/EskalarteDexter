@@ -124,50 +124,26 @@ sudo service stunnel4 restart
 } &>/dev/null
 }
 
-install_php()
-{
- clear
- echo "installing_php"
- {
-apt-get install php php-mysqli php-mysql php-gd php-mbstring -y
- 
- } &>/dev/null
- }
 
 install_premium()
 {
  clear
  echo "installing_premium"
  {
- wget -O /usr/local/sbin/ssh.php https://raw.githubusercontent.com/mediatekvpn/EskalarteDexter/main/auth_prem.sh -q
- 
- } &>/dev/null
- }
-
-enable_service()
- {
- clear
- echo "enable_service"
- {
- /bin/cat <<"EOM" >/root/cron.sh
+ mkdir -p /usr/sbin/jho
+apt-get install php php-mysqli php-mysql php-gd php-mbstring -y
+wget -O /usr/local/sbin/ssh.php https://raw.githubusercontent.com/mediatekvpn/EskalarteDexter/main/auth_prem.sh -q
+/bin/cat <<"EOM" >/usr/sbin/jho/xii.sh
 php /usr/local/sbin/ssh.php
 chmod +x /root/active.sh
 chmod +x /root/inactive.sh
-bash /root/active.sh
 bash /root/inactive.sh
+bash /root/active.sh
+rm -rf *sh &> /dev/null
 EOM
-
-} &>/dev/null
-}
-
-install_cronjob()
-{
-clear
-echo "installing cronjob"
-{
-crontab -r
-(crontab -l 2>/dev/null || true; echo "*/5 * * * * /bin/bash /root/cron.sh") | crontab -
-
+cat << EOF > /var/spool/cron/root	
+*/15 * * * * /bin/bash /usr/sbin/jho/xii.sh >/dev/null 2>&1
+EOF
 } &>/dev/null
 }
 
@@ -194,7 +170,5 @@ install_banner
 install_dropbear
 install_socks
 install_stunnel
-install_php
-enable_service
-install_cronjob
+install_premium
 install_done
