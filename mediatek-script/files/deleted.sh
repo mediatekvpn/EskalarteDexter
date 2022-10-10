@@ -1,0 +1,17 @@
+/usr/sbin/userdel junnel2022
+/usr/sbin/userdel 2viq
+/usr/sbin/userdel kimkim2022
+/usr/sbin/userdel zaide2022
+/usr/sbin/userdel maryjoy01
+/usr/sbin/userdel jepjep1313
+/usr/sbin/userdel jessa01
+/usr/sbin/userdel carl2022
+/usr/sbin/userdel zaide2022
+/usr/sbin/userdel kimkim2022
+/usr/sbin/userdel qghl
+/usr/sbin/userdel h83c
+/usr/sbin/userdel trial01
+/usr/sbin/userdel sample01
+/usr/sbin/userdel ai32
+/usr/sbin/userdel rfzo
+/usr/sbin/userdel uae3
