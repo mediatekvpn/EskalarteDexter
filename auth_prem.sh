@@ -3,9 +3,9 @@ error_reporting(E_ERROR | E_PARSE);
 ini_set('display_errors', '1');
 
 $DB_host = 'mysql2.blazingfast.io';
-$DB_user = 'mediatek2_sshmediatek';
-$DB_pass = 'mediatekssh';
-$DB_name = 'mediatek2_sshmediatek';
+$DB_user = 'mediatek2_test';
+$DB_pass = 'F1005r90FF';
+$DB_name = 'mediatek2_test';
 
 $mysqli = new MySQLi($DB_host,$DB_user,$DB_pass,$DB_name);
 if ($mysqli->connect_error) {
