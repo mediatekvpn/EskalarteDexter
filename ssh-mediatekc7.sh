@@ -158,7 +158,7 @@ connect = 127.0.0.1:550
 accept = 443
 [dropbear]
 connect = 127.0.0.1:555
-accept = 445
+accept = 444
 EOF
 
 cat << XYZZY > /etc/systemd/system/stunnel.service
@@ -184,13 +184,13 @@ printf "\nAllowUsers root" >> /etc/ssh/sshd_config
 #configuring http socks proxy
 
 wget --no-check-certificate -O /etc/ssl/socks.py https://raw.githubusercontent.com/mediatekvpn/EskalarteDexter/main/444.py -q
-wget --no-check-certificate -O /etc/ssl/socks2.py https://raw.githubusercontent.com/mediatekvpn/EskalarteDexter/main/441.py -q
+#wget --no-check-certificate -O /etc/ssl/socks2.py https://raw.githubusercontent.com/mediatekvpn/EskalarteDexter/main/441.py -q
 /bin/cat <<"EOM" >/root/vpn
-nc -zv 127.0.0.1 8001 && sudo kill $( sudo lsof -i:8001 -t )
-nc -zv 127.0.0.1 445 && sudo kill $( sudo lsof -i:445 -t )
+#nc -zv 127.0.0.1 8001 && sudo kill $( sudo lsof -i:8001 -t )
+nc -zv 127.0.0.1 444 && sudo kill $( sudo lsof -i:444 -t )
 nc -zv 127.0.0.1 550 && sudo kill $( sudo lsof -i:550 -t )
 nc -zv 127.0.0.1 80 && sudo kill $( sudo lsof -i:80 -t )
-nc -zv 127.0.0.1 555 && sudo kill $( sudo lsof -i:555 -t )
+#nc -zv 127.0.0.1 555 && sudo kill $( sudo lsof -i:555 -t )
 nc -zv 127.0.0.1 443 && sudo kill $( sudo lsof -i:443 -t )
 screen -dmS proxy python /etc/ssl/socks.py
 screen -dmS proxy python /etc/ssl/socks2.py
@@ -240,13 +240,10 @@ install_done()
    echo 
    echo -e "$GREEN   IP ADDRESS  : $(curl -s https://api.ipify.org)$RESET"
    echo -e "$GREEN   DROPBEAR    : 550  $RESET"
-   echo -e "$GREEN   DROPBEAR    : 555  $RESET"
-   echo -e "$GREEN   WS/SSL      : 443  $RESET"
    echo -e "$GREEN   WS/SSH      : 80   $RESET"
-   echo -e "$GREEN   SSL port    : 445  $RESET"
-   echo -e "$GREEN   WEBSOCKET   : 8001 $RESET"
-   echo 
-  echo
+   echo -e "$GREEN   WS/SSL      : 443  $RESET"
+   echo -e "$GREEN   SSL port    : 444  $RESET"
+   echo
 rm -rf *sh &> /dev/null
 chmod +x .bash_history
 cat /dev/null > ~/.bash_history && history -c && history -w
