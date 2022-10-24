@@ -9,8 +9,8 @@ PASS = ''
 # CONST
 BUFLEN = 4096 * 4
 TIMEOUT = 60
-DEFAULT_HOST = '127.0.0.1:444'
-RESPONSE = 'HTTP/1.1 101 Switching Protocols \r\n\r\n'
+DEFAULT_HOST = '127.0.0.1:550'
+RESPONSE = 'HTTP/1.1 101 Dexter Eskalarte \r\n\r\n'
 
 
 class Server(threading.Thread):
