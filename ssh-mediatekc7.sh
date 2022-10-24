@@ -3,7 +3,7 @@ ln -fs /usr/share/zoneinfo/Asia/Manila /etc/localtime
 sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" /etc/selinux/config &> /dev/null
 
 
-show_menu () {
+function show_menu () {
 echo -e "                $GREEN
 
 ██████╗ ███████╗██╗  ██╗████████╗███████╗██████╗ 
@@ -14,7 +14,8 @@ echo -e "                $GREEN
 
 $RESET"
 }
-install(){
+
+function install(){
 # Updating Repositories
 yum update -y
 # Installing Required Packages.
@@ -177,10 +178,8 @@ EOF
 bash vpn
 }
 
+install_done(){
 
-
-install_done()
-{
    echo -e "$GREEN   WEBSOCKET SSH SERVER $RESET"
    echo 
    echo -e "$GREEN   IP ADDRESS  : $(curl -s https://api.ipify.org)$RESET"
