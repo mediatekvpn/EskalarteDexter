@@ -184,16 +184,12 @@ printf "\nAllowUsers root" >> /etc/ssh/sshd_config
 #configuring http socks proxy
 
 wget --no-check-certificate -O /etc/ssl/socks.py https://raw.githubusercontent.com/mediatekvpn/EskalarteDexter/main/444.py -q
-#wget --no-check-certificate -O /etc/ssl/socks2.py https://raw.githubusercontent.com/mediatekvpn/EskalarteDexter/main/441.py -q
 /bin/cat <<"EOM" >/root/vpn
-#nc -zv 127.0.0.1 8001 && sudo kill $( sudo lsof -i:8001 -t )
 nc -zv 127.0.0.1 444 && sudo kill $( sudo lsof -i:444 -t )
 nc -zv 127.0.0.1 550 && sudo kill $( sudo lsof -i:550 -t )
 nc -zv 127.0.0.1 80 && sudo kill $( sudo lsof -i:80 -t )
-#nc -zv 127.0.0.1 555 && sudo kill $( sudo lsof -i:555 -t )
 nc -zv 127.0.0.1 443 && sudo kill $( sudo lsof -i:443 -t )
 screen -dmS proxy python /etc/ssl/socks.py
-screen -dmS proxy python /etc/ssl/socks2.py
 sudo sync; echo 3 > /proc/sys/vm/drop_caches
 swapoff -a && swapon -a
 echo "Ram Cleaned!"
@@ -205,7 +201,6 @@ netstat -tpln
 EOM
 chmod +x /root/vpn
 chmod +x /etc/ssl/socks.py
-chmod +x /etc/ssl/socks2.py
 #service_start
 service sshd restart
 systemctl enable NetworkManager
