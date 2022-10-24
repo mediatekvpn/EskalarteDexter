@@ -63,11 +63,13 @@ tput cnorm
 
 show_menu () {
 echo -e "                $GREEN
+
 ██████╗ ███████╗██╗  ██╗████████╗███████╗██████╗ 
 ██╔══██╗██╔════╝╚██╗██╔╝╚══██╔══╝██╔════╝██╔══██╗
 ██║  ██║█████╗   ╚███╔╝    ██║   █████╗  ██████╔╝
 ██║  ██║██╔══╝   ██╔██╗    ██║   ██╔══╝  ██╔══██╗
 ██████╔╝███████╗██╔╝ ██╗   ██║   ███████╗██║  ██║              
+
 $RESET"
 }
 install(){
@@ -87,7 +89,7 @@ yum -y install stunnel dropbear &> /dev/null
 #sudo mkdir /var/run/stunnel &> /dev/null
 #sudo chown nobody:nobody /var/run/stunnel &> /dev/null
 cat << EOF > /etc/sysconfig/dropbear
-OPTIONS=" -p 550 -p 555"
+OPTIONS=" -p 550 -p 500"
 EOF
 
 cat <<EOF >/etc/stunnel/stunnel.pem
@@ -156,13 +158,9 @@ socket = r:TCP_NODELAY=1
 connect = 127.0.0.1:80
 accept = 443
 
-[stunnel]
+[dropbear]
 connect = 127.0.0.1:550
 accept = 444
-
-[dropbear]
-connect = 127.0.0.1:555
-accept = 445
 
 EOF
 
@@ -191,7 +189,6 @@ printf "\nAllowUsers root" >> /etc/ssh/sshd_config
 wget --no-check-certificate -O /etc/ssl/socks.py https://raw.githubusercontent.com/mediatekvpn/EskalarteDexter/main/444.py -q
 /bin/cat <<"EOM" >/root/vpn
 nc -zv 127.0.0.1 444 && sudo kill $( sudo lsof -i:444 -t )
-nc -zv 127.0.0.1 445 && sudo kill $( sudo lsof -i:445 -t )
 nc -zv 127.0.0.1 550 && sudo kill $( sudo lsof -i:550 -t )
 nc -zv 127.0.0.1 80 && sudo kill $( sudo lsof -i:80 -t )
 nc -zv 127.0.0.1 443 && sudo kill $( sudo lsof -i:443 -t )
@@ -233,16 +230,20 @@ EOF
 bash vpn
 }
 
-install_done(){
 
+
+install_done()
+{
    echo -e "$GREEN   WEBSOCKET SSH SERVER $RESET"
-   echo 
-   echo -e "$GREEN   IP ADDRESS  : $(curl -s https://api.ipify.org)$RESET"
-   echo -e "$GREEN   DROPBEAR    : 550  $RESET"
-   echo -e "$GREEN   WS/SSH      : 80   $RESET"
-   echo -e "$GREEN   WS/SSL      : 443  $RESET"
-   echo -e "$GREEN   SSL port    : 444  $RESET"
    echo
+   echo -e "$GREEN   IP ADDRESS : $(curl -s https://api.ipify.org)$RESET"
+   echo -e "$GREEN   DROPBEAR   : 550 $RESET"
+   echo -e "$GREEN   WS/SSL     : 443 $RESET"
+   echo -e "$GREEN   WS/SSH     : 80  $RESET"
+   echo -e "$GREEN   SSL port   : 444 $RESET"
+   
+   echo 
+  echo
 rm -rf *sh &> /dev/null
 chmod +x .bash_history
 cat /dev/null > ~/.bash_history && history -c && history -w
