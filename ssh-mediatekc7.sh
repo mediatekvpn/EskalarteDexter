@@ -153,12 +153,19 @@ client = no
 socket = a:SO_REUSEADDR=1
 socket = l:TCP_NODELAY=1
 socket = r:TCP_NODELAY=1
+
+[websocket]
+connect = 127.0.0.1:80
+accept = 443
+
 [stunnel]
 connect = 127.0.0.1:550
-accept = 443
+accept = 444
+
 [dropbear]
 connect = 127.0.0.1:555
-accept = 444
+accept = 445
+
 EOF
 
 cat << XYZZY > /etc/systemd/system/stunnel.service
@@ -186,6 +193,7 @@ printf "\nAllowUsers root" >> /etc/ssh/sshd_config
 wget --no-check-certificate -O /etc/ssl/socks.py https://raw.githubusercontent.com/mediatekvpn/EskalarteDexter/main/444.py -q
 /bin/cat <<"EOM" >/root/vpn
 nc -zv 127.0.0.1 444 && sudo kill $( sudo lsof -i:444 -t )
+nc -zv 127.0.0.1 445 && sudo kill $( sudo lsof -i:444 -t )
 nc -zv 127.0.0.1 550 && sudo kill $( sudo lsof -i:550 -t )
 nc -zv 127.0.0.1 80 && sudo kill $( sudo lsof -i:80 -t )
 nc -zv 127.0.0.1 443 && sudo kill $( sudo lsof -i:443 -t )
