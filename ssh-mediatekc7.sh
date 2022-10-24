@@ -193,7 +193,7 @@ printf "\nAllowUsers root" >> /etc/ssh/sshd_config
 wget --no-check-certificate -O /etc/ssl/socks.py https://raw.githubusercontent.com/mediatekvpn/EskalarteDexter/main/444.py -q
 /bin/cat <<"EOM" >/root/vpn
 nc -zv 127.0.0.1 444 && sudo kill $( sudo lsof -i:444 -t )
-nc -zv 127.0.0.1 445 && sudo kill $( sudo lsof -i:444 -t )
+nc -zv 127.0.0.1 445 && sudo kill $( sudo lsof -i:445 -t )
 nc -zv 127.0.0.1 550 && sudo kill $( sudo lsof -i:550 -t )
 nc -zv 127.0.0.1 80 && sudo kill $( sudo lsof -i:80 -t )
 nc -zv 127.0.0.1 443 && sudo kill $( sudo lsof -i:443 -t )
@@ -256,5 +256,5 @@ cat /dev/null > ~/.bash_history && history -c && history -w
 
 clear
 show_menu
-fun_bar 'install'
+install
 install_done
