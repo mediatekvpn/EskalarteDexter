@@ -89,7 +89,7 @@ yum -y install stunnel dropbear &> /dev/null
 #sudo mkdir /var/run/stunnel &> /dev/null
 #sudo chown nobody:nobody /var/run/stunnel &> /dev/null
 cat << EOF > /etc/sysconfig/dropbear
-OPTIONS=" -p 550 -p 555"
+OPTIONS=" -p 444 -p 441"
 EOF
 
 cat <<EOF >/etc/stunnel/stunnel.pem
@@ -153,17 +153,11 @@ client = no
 socket = a:SO_REUSEADDR=1
 socket = l:TCP_NODELAY=1
 socket = r:TCP_NODELAY=1
-
-[websocket]
-connect = 127.0.0.1:80
-accept = 443
-
 [stunnel]
-connect = 127.0.0.1:550
-accept = 444
-
+connect = 127.0.0.1:444
+accept = 443
 [dropbear]
-connect = 127.0.0.1:555
+connect = 127.0.0.1:441
 accept = 445
 EOF
 
@@ -190,13 +184,16 @@ printf "\nAllowUsers root" >> /etc/ssh/sshd_config
 #configuring http socks proxy
 
 wget --no-check-certificate -O /etc/ssl/socks.py https://raw.githubusercontent.com/mediatekvpn/EskalarteDexter/main/444.py -q
+wget --no-check-certificate -O /etc/ssl/socks2.py https://raw.githubusercontent.com/mediatekvpn/EskalarteDexter/main/441.py -q
 /bin/cat <<"EOM" >/root/vpn
+nc -zv 127.0.0.1 8001 && sudo kill $( sudo lsof -i:8001 -t )
 nc -zv 127.0.0.1 445 && sudo kill $( sudo lsof -i:445 -t )
-nc -zv 127.0.0.1 550 && sudo kill $( sudo lsof -i:550 -t )
+nc -zv 127.0.0.1 441 && sudo kill $( sudo lsof -i:441 -t )
 nc -zv 127.0.0.1 80 && sudo kill $( sudo lsof -i:80 -t )
-nc -zv 127.0.0.1 555 && sudo kill $( sudo lsof -i:555 -t )
+nc -zv 127.0.0.1 444 && sudo kill $( sudo lsof -i:444 -t )
 nc -zv 127.0.0.1 443 && sudo kill $( sudo lsof -i:443 -t )
 screen -dmS proxy python /etc/ssl/socks.py
+screen -dmS proxy python /etc/ssl/socks2.py
 sudo sync; echo 3 > /proc/sys/vm/drop_caches
 swapoff -a && swapon -a
 echo "Ram Cleaned!"
@@ -208,6 +205,7 @@ netstat -tpln
 EOM
 chmod +x /root/vpn
 chmod +x /etc/ssl/socks.py
+chmod +x /etc/ssl/socks2.py
 #service_start
 service sshd restart
 systemctl enable NetworkManager
@@ -238,13 +236,14 @@ bash vpn
 
 install_done()
 {
-   echo -e "$GREEN   WEBSOCKET SSH SERVER $RESET"
-   echo -e "$GREEN   IP ADDRESS    : $(curl -s https://api.ipify.org)$RESET"
-   echo -e "$RED     DROPBEAR port : 550 $RESET"
-   echo -e "$RED     SSL port      : 443 $RESET"
-   echo -e "$RED     SSH WEBSOCKET : 80 $RESET"
-   echo -e "$YELLOW  DROPBEAR      : 555 $RESET"
-   echo -e "$YELLOW  SSL port      : 444 $RESET"
+  echo -e "$GREEN   WEBSOCKET SSH SERVER $RESET"
+   echo -e "$GREEN   IP ADDRESS : $(curl -s https://api.ipify.org)$RESET"
+   echo -e "$RED   DROPBEAR port : 444 $RESET"
+   echo -e "$RED   SSL port : 443 $RESET"
+   echo -e "$RED   SSH WEBSOCKET port : 80 $RESET"
+   echo -e "$YELLOW   DROPBEAR port : 441 $RESET"
+   echo -e "$YELLOW   SSL port : 445 $RESET"
+   echo -e "$YELLOW   WEBSOCKET port : 8001 $RESET"
    echo 
   echo
 rm -rf *sh &> /dev/null
